@@ -32,4 +32,17 @@ class HIN implements Stringable {
   {
     $this->HIN = strtoupper($HIN);
   }
+
+  /**
+   * Get HIN Manufacturer Code
+   *
+   * @return string MIC code
+   * @throws None
+   * @author Alec M. <https://amattu.com>
+   * @date 2021-09-01
+   */
+  public function getMIC() : string
+  {
+    return substr($this->HIN, 0, 2);
+  }
 }
