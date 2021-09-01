@@ -17,6 +17,7 @@ A list of valuable HIN information sources is below.
 - https://www.boatus.com/expert-advice/expert-advice-archive/2017/february/hull-identification-numbers
 - https://drive.ky.gov/motor-vehicle-licensing/Pages/HIN.aspx#hin-location
 - https://www.dol.wa.gov/forms/420739.pdf
+- https://uscgboating.org/content/manufacturers-identification.php
 
 # Requirements & Dependencies
 - PHP7+
