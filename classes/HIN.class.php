@@ -60,6 +60,28 @@ class HIN implements Stringable {
   }
 
   /**
+   * Get hull raw production date
+   *
+   * NOTE:
+   *   (1) This does not return a human readable date,
+   *   only two characters (i.e. D4) indicating the month (D)
+   *   and year (4) of production.
+   *   (2) In order for this information to be valuable,
+   *   you would need to parse the month (A: Jan - L: Dec)
+   *   and the year (4) IN COMBINATION with the last 2 digits
+   *   of the HIN. See README.md for more info about this.
+   *
+   * @return string 2 character production date
+   * @throws None
+   * @author Alec M. <https://amattu.com>
+   * @date 2021-09-01
+   */
+  public function getRawProductionDate() : string
+  {
+    return substr($this->HIN, 8, 9);
+  }
+
+  /**
    * Get the month of manufacturer
    *
    * NOTE:
