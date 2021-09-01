@@ -56,6 +56,52 @@ class HIN implements Stringable {
    */
   public function getSN() : string
   {
-    return substr($this->VIN, 3, 7);
+    return substr($this->HIN, 3, 7);
+  }
+
+  /**
+   * Get the month of manufacturer
+   *
+   * NOTE:
+   *   (1) A value of null indicates an invalid
+   *   month of manufacturer
+   *
+   * @return int (M) format for production month
+   * @throws None
+   * @author Alec M. <https://amattu.com>
+   * @date 2021-09-01
+   */
+  public function getProductionMonth() : ?int
+  {
+    // Find Month
+    switch ($this->HIN[8]) {
+      case "A":
+        return 1;
+      case "B":
+        return 2;
+      case "C":
+        return 3;
+      case "D":
+        return 4;
+      case "E":
+        return 5;
+      case "F":
+        return 6;
+      case "G":
+        return 7;
+      case "H":
+        return 8;
+      case "I":
+        return 9;
+      case "J":
+        return 10;
+      case "K":
+        return 11;
+      case "L":
+        return 12;
+    }
+
+    // Default
+    return null;
   }
 }
