@@ -34,7 +34,7 @@ class HIN implements Stringable {
   }
 
   /**
-   * Get HIN Manufacturer Code
+   * Get HIN manufacturer code
    *
    * @return string MIC code
    * @throws None
@@ -44,5 +44,18 @@ class HIN implements Stringable {
   public function getMIC() : string
   {
     return substr($this->HIN, 0, 2);
+  }
+
+  /**
+   * Get hull serial number
+   *
+   * @return string hull serial number
+   * @throws None
+   * @author Alec M. <https://amattu.com>
+   * @date 2021-09-01
+   */
+  public function getSN() : string
+  {
+    return substr($this->VIN, 3, 7);
   }
 }
