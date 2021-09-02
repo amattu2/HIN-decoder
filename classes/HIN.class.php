@@ -2,7 +2,7 @@
 # @Author: Alec M. <amattu>
 # @Date:   2021-09-01
 # @Last modified by:   amattu
-# @Last modified time: 2021-09-02 10:50:20
+# @Last modified time: 2021-09-02 10:54:56
 # @License: GNU Affero General Public License v3.0
 # @Copyright: Alec M.
 
@@ -76,14 +76,14 @@ class HIN {
     // Check Production Date
     $production_date = $this->raw_production_date();
     if (!preg_match("/[A-L]/i", $production_date[0]))
-      throw new InvalidHINException("Production month is not valid");
+      throw new InvalidHINException("The HIN production month is not valid");
     if (!is_numeric($production_date[1]))
-      throw new InvalidHINException("Production year is not valid");
+      throw new InvalidHINException("The HIN production year is not valid");
 
     // Check Model Year
     $model_year = $this->raw_model_year();
     if (!is_numeric($model_year))
-      throw new InvalidHINException("Model year is not valid");
+      throw new InvalidHINException("The indicated HIN model year is not valid");
   }
 
   /**
