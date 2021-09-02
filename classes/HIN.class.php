@@ -2,7 +2,7 @@
 # @Author: Alec M. <amattu>
 # @Date:   2021-09-01
 # @Last modified by:   amattu
-# @Last modified time: 2021-09-02 10:57:14
+# @Last modified time: 2021-09-02 10:58:52
 # @License: GNU Affero General Public License v3.0
 # @Copyright: Alec M.
 
@@ -224,10 +224,10 @@ class HIN {
    * NOTE:
    *   (1) This is unformatted, and in a (YY) date format.
    *
-   * @return int [description]
-   * @throws
+   * @return int unparsed model year
+   * @throws None
    * @author Alec M. <https://amattu.com>
-   * @date 2021-09-02Tfalse10:false38:false40-040
+   * @date 2021-09-02T10:38:40-040
    */
   public function raw_model_year() : int
   {
