@@ -2,7 +2,7 @@
 # @Author: Alec M. <amattu>
 # @Date:   2021-09-02
 # @Last modified by:   amattu
-# @Last modified time: 2021-09-02 11:07:22
+# @Last modified time: 2021-09-02 11:30:32
 # @License: GNU Affero General Public License v3.0
 # @Copyright: Alec M.
 
@@ -10,7 +10,24 @@
 require("classes/HIN.class.php");
 
 // Example HINs
-$HINS = ["YDV19777A808", "BMA45678H485", "STN34945E787", "XDV39777Z808", "XDV3777B808", "BMA45I78H485", "BMA45678HL85", "!TN34945E787"];
+$HINS = [
+  "XKA13704C898",
+  "CRL43965M73F",
+  "HII9132EH899",
+  "APK21781K596",
+  "FLZBT345G690",
+  "SEAL9894M83E",
+  "SMK72301B898",
+  "JF650B602421",
+  "YDV19777A808",
+  "BMA45678H485",
+  "STN34945E787",
+  "XDV39777Z808",
+  "XDV3777B808",
+  "BMA45I78H485",
+  "BMA45678HL85",
+  "!TN34945E787"
+];
 
 // Iterate through examples
 foreach ($HINS as $index => $HIN) {
