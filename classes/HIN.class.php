@@ -2,12 +2,15 @@
 # @Author: Alec M. <amattu>
 # @Date:   2021-09-01
 # @Last modified by:   amattu
-# @Last modified time: 2021-09-02
+# @Last modified time: 2021-09-02 10:50:20
 # @License: GNU Affero General Public License v3.0
 # @Copyright: Alec M.
 
 // Class namespace
 namespace amattu;
+
+// Exceptions
+class InvalidHINException extends \Exception {};
 
 /*
  Hull Identification Number Class
@@ -28,16 +31,54 @@ class HIN {
   public const MINIMUM_YEAR = 1984;
 
   /**
+   * The length of a valid HIN
+   *
+   * @var int
+   */
+  public const LENGTH = 12;
+
+  /**
+   * Characters allowed in a serial number
+   *
+   * @var string
+   */
+  public const VALID_SN_CHARACTERS = "ABCDEFGHJKLMNPRSTUVWXYZ1234567890";
+
+  /**
    * Class Constructor
    *
    * @param string $HIN hull ID number
    * @throws TypeError
+   * @throws InvalidHINException
    * @author Alec M. <https://amattu.com>
    * @date 2021-09-01
    */
   public function __construct(string $HIN)
   {
+    // Set HIN
     $this->HIN = strtoupper($HIN);
+
+    // Check Length
+    if (strlen($HIN) !== HIN::LENGTH)
+      throw new InvalidHINException("Provided HIN is not of the correct length");
+
+    // Check Serial Characters
+    $serial_number = $this->serial_number();
+    for ($i = 0; $i < strlen($serial_number); $i++)
+      if (strpos(HIN::VALID_SN_CHARACTERS, $serial_number[$i]) === false)
+        throw new InvalidHINException("Found invalid character {$serial_number[$i]} in HIN serial number");
+
+    // Check Production Date
+    $production_date = $this->raw_production_date();
+    if (!preg_match("/[A-L]/i", $production_date[0]))
+      throw new InvalidHINException("Production month is not valid");
+    if (!is_numeric($production_date[1]))
+      throw new InvalidHINException("Production year is not valid");
+
+    // Check Model Year
+    $model_year = $this->raw_model_year();
+    if (!is_numeric($model_year))
+      throw new InvalidHINException("Model year is not valid");
   }
 
   /**
@@ -50,7 +91,7 @@ class HIN {
    */
   public function __tostring() : string
   {
-    return $this->HIN;
+    return "{$this->HIN} [MY: {$this->model_year()}]";
   }
 
   /**
@@ -63,7 +104,7 @@ class HIN {
    */
   public function manufacturer_code() : string
   {
-    return substr($this->HIN, 0, 2);
+    return substr($this->HIN, 0, 3);
   }
 
   /**
@@ -76,7 +117,7 @@ class HIN {
    */
   public function serial_number() : string
   {
-    return substr($this->HIN, 3, 7);
+    return substr($this->HIN, 3, 5);
   }
 
   /**
@@ -99,68 +140,60 @@ class HIN {
    */
   public function raw_production_date() : string
   {
-    return substr($this->HIN, 8, 9);
+    return substr($this->HIN, 8, 2);
   }
 
   /**
-   * Get the month of manufacture
+   * Get the hull month of manufacture
    *
-   * NOTE:
-   *   (1) A value of null indicates an invalid
-   *   month of manufacture
-   *
-   * @return int (M) format for production month
+   * @return string (MM) format for production month
    * @throws None
    * @author Alec M. <https://amattu.com>
    * @date 2021-09-01
    */
-  public function production_month() : ?int
+  public function production_month() : string
   {
     // Find Month
     switch ($this->HIN[8]) {
       case "A":
-        return 1;
+        return "01";
       case "B":
-        return 2;
+        return "02";
       case "C":
-        return 3;
+        return "03";
       case "D":
-        return 4;
+        return "04";
       case "E":
-        return 5;
+        return "05";
       case "F":
-        return 6;
+        return "06";
       case "G":
-        return 7;
+        return "07";
       case "H":
-        return 8;
+        return "08";
       case "I":
-        return 9;
+        return "09";
       case "J":
-        return 10;
+        return "10";
       case "K":
-        return 11;
+        return "11";
       case "L":
-        return 12;
+        return "12";
     }
-
-    // Default
-    return null;
   }
 
   /**
-   * Get the year of manufacture
+   * Get the hull year of manufacture
    *
    * NOTE:
-   *   (1) This is NOT the model year. Use
-   *   model_year for that
+   *   (1) This is NOT the model year. Use model_year for that
    *
    * @return int hull production year (YYYY)
    * @throws None
    * @author Alec M. <https://amattu.com>
    * @date 2021-09-02T09:17:06-040
    */
-  public function production_year() : ?int
+  public function production_year() : int
   {
     // Validate Model Year
     $model_year = $this->model_year();
@@ -181,6 +214,22 @@ class HIN {
   }
 
   /**
+   * Get hull raw model year
+   *
+   * NOTE:
+   *   (1) This is unformatted, and in a (YY) date format.
+   *
+   * @return int [description]
+   * @throws
+   * @author Alec M. <https://amattu.com>
+   * @date 2021-09-02Tfalse10:false38:false40-040
+   */
+  public function raw_model_year() : int
+  {
+    return substr($this->HIN, 10, 2);
+  }
+
+  /**
    * Determine a HIN model year
    *
    * @return int 4-digit model year
@@ -191,17 +240,22 @@ class HIN {
   public function model_year() : int
   {
     // Validate Model Year
-    $model_year_2 = substr($this->HIN, 10, 11);
+    $model_year_2 = substr($this->HIN, 10, 2);
     if (!is_numeric($model_year_2))
       return 0;
 
     // Convert 2-digit year to 4-digit
-    $model_year_dt = \DateTime::createFromFormat("y", $model_year);
-    $model_year_4 = $model_year_dt->format("Y");
+    $model_year_dt = \DateTime::createFromFormat("y", $model_year_2);
+    $model_year_4 = (int) $model_year_dt->format("Y");
     if ($model_year_4 < HIN::MINIMUM_YEAR)
       return 0;
 
     // Return
     return $model_year_4;
+  }
+
+  public function manufacturer() : string
+  {
+    return "TBD";
   }
 }
