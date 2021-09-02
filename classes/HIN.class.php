@@ -1,8 +1,8 @@
 <?php
 # @Author: Alec M. <nachfolger>
 # @Date:   2021-09-01
-# @Last modified by:   nachfolger
-# @Last modified time: 2021-09-01
+# @Last modified by:   amattu
+# @Last modified time: 2021-09-02
 # @License: GNU Affero General Public License v3.0
 # @Copyright: Alec M.
 
@@ -34,6 +34,19 @@ class HIN implements Stringable {
   }
 
   /**
+   * Class toString function
+   *
+   * @return string class stringified
+   * @throws None
+   * @author Alec M. <https://amattu.com>
+   * @date 2021-09-02T09:05:00-040
+   */
+  public function __tostring() : string
+  {
+    return $this->HIN;
+  }
+
+  /**
    * Get HIN manufacturer code
    *
    * @return string MIC code
@@ -41,7 +54,7 @@ class HIN implements Stringable {
    * @author Alec M. <https://amattu.com>
    * @date 2021-09-01
    */
-  public function getMIC() : string
+  public function manufacturer_code() : string
   {
     return substr($this->HIN, 0, 2);
   }
@@ -54,7 +67,7 @@ class HIN implements Stringable {
    * @author Alec M. <https://amattu.com>
    * @date 2021-09-01
    */
-  public function getSN() : string
+  public function serial_number() : string
   {
     return substr($this->HIN, 3, 7);
   }
@@ -76,24 +89,24 @@ class HIN implements Stringable {
    * @author Alec M. <https://amattu.com>
    * @date 2021-09-01
    */
-  public function getRawProductionDate() : string
+  public function raw_production_date() : string
   {
     return substr($this->HIN, 8, 9);
   }
 
   /**
-   * Get the month of manufacturer
+   * Get the month of manufacture
    *
    * NOTE:
    *   (1) A value of null indicates an invalid
-   *   month of manufacturer
+   *   month of manufacture
    *
    * @return int (M) format for production month
    * @throws None
    * @author Alec M. <https://amattu.com>
    * @date 2021-09-01
    */
-  public function getProductionMonth() : ?int
+  public function production_month() : ?int
   {
     // Find Month
     switch ($this->HIN[8]) {
