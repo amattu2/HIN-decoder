@@ -60,7 +60,12 @@ class HIN {
 
     // Check Length
     if (strlen($HIN) !== HIN::LENGTH)
-      throw new InvalidHINException("Provided HIN is not of the correct length");
+      throw new InvalidHINException("The provided HIN does not meet length expected");
+
+    // Check Manufacturer Code
+    $manufacturer_code = $this->manufacturer_code();
+    if (!preg_match("/[A-Z0-9]/i", $manufacturer_code))
+      throw new InvalidHINException("The HIN has an invalid Manufacturer Code");
 
     // Check Serial Characters
     $serial_number = $this->serial_number();
