@@ -2,7 +2,7 @@
 # @Author: Alec M. <amattu>
 # @Date:   2021-09-01
 # @Last modified by:   amattu
-# @Last modified time: 2021-09-02 10:58:52
+# @Last modified time: 2021-09-02 11:06:28
 # @License: GNU Affero General Public License v3.0
 # @Copyright: Alec M.
 
@@ -10,7 +10,12 @@
 namespace amattu;
 
 // Exceptions
-class InvalidHINException extends \Exception {};
+class InvalidHINLengthException extends \Exception {};
+class InvalidHINMICException extends \Exception {};
+class InvalidHINSerialException extends \Exception {};
+class InvalidHINProductionMonthException extends \Exception {};
+class InvalidHINProductionYearException extends \Exception {};
+class InvalidHINModelYearException extends \Exception {};
 
 /*
  Hull Identification Number Class
@@ -49,7 +54,12 @@ class HIN {
    *
    * @param string $HIN hull ID number
    * @throws TypeError
-   * @throws InvalidHINException
+   * @throws InvalidHINLengthException
+   * @throws InvalidHINMICException
+   * @throws InvalidHINSerialException
+   * @throws InvalidHINProductionMonthException
+   * @throws InvalidHINProductionYearException
+   * @throws InvalidHINModelYearException
    * @author Alec M. <https://amattu.com>
    * @date 2021-09-01
    */
@@ -60,30 +70,30 @@ class HIN {
 
     // Check Length
     if (strlen($HIN) !== HIN::LENGTH)
-      throw new InvalidHINException("The provided HIN does not meet length expected");
+      throw new InvalidHINLengthException("The provided HIN does not meet length expected");
 
     // Check Manufacturer Code
     $manufacturer_code = $this->manufacturer_code();
     if (!ctype_alnum($manufacturer_code))
-      throw new InvalidHINException("The HIN has an invalid Manufacturer Code");
+      throw new InvalidHINMICException("The HIN has an invalid Manufacturer Code");
 
     // Check Serial Characters
     $serial_number = $this->serial_number();
     for ($i = 0; $i < strlen($serial_number); $i++)
       if (strpos(HIN::VALID_SN_CHARACTERS, $serial_number[$i]) === false)
-        throw new InvalidHINException("Found invalid character {$serial_number[$i]} in HIN serial number");
+        throw new InvalidHINSerialException("Found invalid character {$serial_number[$i]} in HIN serial number");
 
     // Check Production Date
     $production_date = $this->raw_production_date();
     if (!preg_match("/[A-L]/i", $production_date[0]))
-      throw new InvalidHINException("The HIN production month is not valid");
+      throw new InvalidHINProductionMonthException("The HIN production month is not valid");
     if (!is_numeric($production_date[1]))
-      throw new InvalidHINException("The HIN production year is not valid");
+      throw new InvalidHINProductionYearException("The HIN production year is not valid");
 
     // Check Model Year
     $model_year = $this->raw_model_year();
     if (!is_numeric($model_year))
-      throw new InvalidHINException("The indicated HIN model year is not valid");
+      throw new InvalidHINModelYearException("The indicated HIN model year is not valid");
   }
 
   /**
