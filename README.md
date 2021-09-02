@@ -4,10 +4,37 @@ This small PHP project is designed to aid those in need of interacting with boat
 # Hull Identification Number (HIN) Format
 The following table demonstrates the expected structuring to a valid hull ID number.
 
-|Current Format (As of Aug 1, 1984)|
-|--|--|--|--|
+## Format
+|Current Format (As of Aug 1, 1984)||||
+|:-:|:-:|:-:|:-:|
 |BMA|45678|H4|85|
-|MIC|Serial|Manufacturer Date|Model Year|
+|Manufacturer Identification Code (MIC)|Serial Number|Production Date|Model Year|
+
+## Production Month
+The first character in the production date (i.e. `H` in `H4`) is the production month.
+
+|Character|Month|
+|:-:|:-|
+|A|January|
+|B|February|
+|C|March|
+|D|April|
+|E|May|
+|F|June|
+|G|July|
+|H|August|
+|I|September|
+|J|October|
+|K|November|
+|L|December|
+
+## Production Year
+The production year is the second character in the production date (i.e. `4` in `H4`). This alone does not tell you the decade, and must be used with the last two digits in the HIN to determine which decade the vessel was produced.
+
+### Examples
+- YDV19777**A808**; this gives January (`A`) of 2008 (`8`). We can determine that by the last two digits of the HIN (`08`), where `08` represents 2008 and not 1908.
+
+- STN34945**E787**; this gives May (`E`) of 1987 (`7`). We can determine that by the last two digits (`87`) which obviously represents 1987, not 2087.
 
 # Usage
 ## Setup
