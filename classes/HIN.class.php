@@ -12,7 +12,7 @@ namespace amattu;
 /*
  Hull Identification Number Class
  */
-class HIN implements Stringable {
+class HIN {
   /**
    * Hull Identification Number
    *
