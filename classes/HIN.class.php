@@ -1,5 +1,5 @@
 <?php
-# @Author: Alec M. <nachfolger>
+# @Author: Alec M. <amattu>
 # @Date:   2021-09-01
 # @Last modified by:   amattu
 # @Last modified time: 2021-09-02
@@ -19,6 +19,13 @@ class HIN implements Stringable {
    * @var string
    */
   private $HIN = null;
+
+  /**
+   * Minimum supported HIN model year
+   *
+   * @var int
+   */
+  public const MINIMUM_YEAR = 1984;
 
   /**
    * Class Constructor
@@ -139,5 +146,62 @@ class HIN implements Stringable {
 
     // Default
     return null;
+  }
+
+  /**
+   * Get the year of manufacture
+   *
+   * NOTE:
+   *   (1) This is NOT the model year. Use
+   *   model_year for that
+   *
+   * @return int hull production year (YYYY)
+   * @throws None
+   * @author Alec M. <https://amattu.com>
+   * @date 2021-09-02T09:17:06-040
+   */
+  public function production_year() : ?int
+  {
+    // Validate Model Year
+    $model_year = $this->model_year();
+    if ($model_year < HIN::MINIMUM_YEAR)
+      return null;
+
+    // Validate Production Year
+    $production_year = $this->HIN[9];
+    if (!is_numeric($production_year))
+      return null;
+
+    // Force model_year to string
+    $model_year_string = (string) $model_year;
+    $model_year_string[3] = $production_year;
+
+    // Return
+    return (int) $model_year_string;
+  }
+
+  /**
+   * Determine a HIN model year
+   *
+   * @return int 4-digit model year
+   * @throws None
+   * @author Alec M. <https://amattu.com>
+   * @date 2021-09-02T09:39:43-040
+   */
+  public function model_year() : int
+  {
+    // Validate Model Year
+    $model_year_2 = substr($this->HIN, 10, 11);
+    if (!is_numeric($model_year_2))
+      return 0;
+
+    // Convert 2-digit year to 4-digit
+    $model_year_dt = \DateTime::createFromFormat("y", $model_year);
+    $model_year_4 = $model_year_dt->format("Y");
+    if ($model_year_4 < HIN::MINIMUM_YEAR)
+      return 0;
+
+    // Return
+    return $model_year_4;
   }
 }
