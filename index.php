@@ -2,7 +2,7 @@
 # @Author: Alec M. <amattu>
 # @Date:   2021-09-02
 # @Last modified by:   amattu
-# @Last modified time: 2021-09-02 10:56:20
+# @Last modified time: 2021-09-02 11:07:22
 # @License: GNU Affero General Public License v3.0
 # @Copyright: Alec M.
 
@@ -43,7 +43,7 @@ foreach ($HINS as $index => $HIN) {
 
     // Example: HIN manufacturer
     echo "<h3>manufacturer</h3>", $decoder->manufacturer();
-  } catch (amattu\InvalidHINException $e) {
+  } catch (Exception $e) {
     echo "<h3>HIN is invalid</h3>", "Failed for: ", $e->getMessage();
   }
 
