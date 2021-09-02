@@ -2,7 +2,7 @@
 # @Author: Alec M. <amattu>
 # @Date:   2021-09-01
 # @Last modified by:   amattu
-# @Last modified time: 2021-09-02 10:54:56
+# @Last modified time: 2021-09-02 10:57:14
 # @License: GNU Affero General Public License v3.0
 # @Copyright: Alec M.
 
@@ -64,7 +64,7 @@ class HIN {
 
     // Check Manufacturer Code
     $manufacturer_code = $this->manufacturer_code();
-    if (!preg_match("/[A-Z0-9]/i", $manufacturer_code))
+    if (!ctype_alnum($manufacturer_code))
       throw new InvalidHINException("The HIN has an invalid Manufacturer Code");
 
     // Check Serial Characters
