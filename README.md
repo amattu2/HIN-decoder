@@ -111,6 +111,7 @@ A list of valuable HIN information sources is below.
 - https://drive.ky.gov/motor-vehicle-licensing/Pages/HIN.aspx#hin-location
 - https://www.dol.wa.gov/forms/420739.pdf
 - https://uscgboating.org/content/manufacturers-identification.php
+- https://en.wikipedia.org/wiki/Hull_number
 
 # Requirements & Dependencies
 - PHP7+
